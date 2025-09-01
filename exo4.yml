@@ -1,0 +1,57 @@
+openapi: 3.0.0
+info:
+  title: Products API
+  version: 1.0.0
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        name:
+          type: string
+        expiration_datetime:
+          type: string
+          format: date-time
+        price:
+          type: number
+          format: float
+  parameters:
+    limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+      required: false
+    q:
+      name: q
+      in: query
+      schema:
+        type: string
+      required: false
+paths:
+  /products:
+    get:
+      summary: Search products
+      parameters:
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/q'
+      responses:
+        '200':
+          description: List of products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+              examples:
+                multipleProducts:
+                  value:
+                    - name: Apple
+                      expiration_datetime: 2025-09-01T12:00:00Z
+                      price: 1.5
+                    - name: Banana
+                      expiration_datetime: 2025-08-28T12:00:00Z
+                      price: 0.8
+                emptyList:
+                  value: []
